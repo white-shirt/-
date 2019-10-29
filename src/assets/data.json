@@ -1,0 +1,38 @@
+{
+  "img": {
+    "url": "",
+    "location": [],
+    "word": [],
+    "where": ""
+  },
+  "park1": {
+    "img": {
+      //同上img
+    }
+  },
+  "park2": {
+    "img": {
+      //同上img
+    }
+  },
+  // "trafficLight": {
+  //   "light1": "red",
+  //   "light2": "yellow",
+  //   "light3": "green",
+  //   "light4": "",
+  //   "light5": "",
+  //   "light6": ""
+  // },
+  "trafficLocation": {
+    "LocationNum": "",
+    "img": {
+      //同上img
+    }
+  },
+  "etc": {
+    "etcNum": "",
+    "img": {
+      //同上img
+    }
+  } 
+}
