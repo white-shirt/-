@@ -1,11 +1,12 @@
 <template>
-  <div class="box" v-if="device !== 4">
+  <div class="box">
     <!-- <div class="arrow up" v-if="device == 1" @click="up"></div>
     <div class="arrow down" v-if="device == 1" @click="down"></div> -->
     <div class="arrow left" v-if="device == 1 || device == 2" @click="left"></div>
     <div class="arrow right" v-if="device == 1 || device == 2" @click="right"></div>
     <div class="stop" v-if="device == 1 || device == 2" @click="stop"></div>
-    <div class="capture" v-if="device == 3" @click="capture"></div>
+    <div class="capture" v-if="device == 3" @click="capture(15)"></div>
+    <div class="capture" v-if="device == 4" @click="capture(18)"></div>
   </div>
 </template>
 
@@ -54,10 +55,10 @@ export default {
         data: "accessToken=" + this.Token + "&deviceSerial=" + this.deviceSerial + "&channelNo=1"
       });
     },
-    capture: function () {
+    capture: function (num) {
       this.$store.dispatch("_axios/_axiosPost", {
         url: "http://10.1.1.203:8080/interface",
-        data: "facereco=1"
+        data: "facereco=" + num
       });
     }
   },

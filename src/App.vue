@@ -1,6 +1,9 @@
 <template>
   <div id="app">
     <div class="head">智能网联无人车教学平台</div>
+    <div class="mp3">
+      <playMp3></playMp3>
+    </div>
     <div class="flowBox" v-if="curFlow !== ''">
       <div class="closeFlow" @click="closeFlow">
         <img :src="closePic" style="position: absolute; top: 0; left: 0; display: block; width:100%; height: 100%" />
@@ -48,6 +51,14 @@
               <span class="ETC ETCwest">西ETC</span>
               <span class="ETC ETCeast">东ETC</span>
             </div>
+            <div class="demoPosition" v-if="demoShow">
+              <demos :curDemo="curDemo"></demos>
+            </div>
+            <div class="demoBtnBox">
+              <div class="demoBtn demo1" @click="demo('demo1')"><img class="demoImg" :src="demo1" /></div>  
+              <div class="demoBtn demo2" @click="demo('demo2')"><img class="demoImg" :src="demo2" /></div>  
+              <div class="demoBtn demo3" @click="demo('demo3')"><img class="demoImg" :src="demo3" /></div>  
+            </div>
           </div>
         </div>
       </div>
@@ -56,8 +67,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import videoBox from "./components/videoBox.vue";
 import mapBg from "./assets/map_bg.png";
 import map from "./assets/map.png";
 import trafficLight from "./assets/trafficLight.png";
@@ -67,22 +76,33 @@ import parkBg from "./assets/parkBg.png";
 import parkclose from "./assets/parkclose.png";
 import ETCBg from "./assets/ETCBg.png";
 import ETCclose from "./assets/ETCclose.png";
+import demo1 from "./assets/demo1.png";
+import demo2 from "./assets/demo2.png";
+import demo3 from "./assets/demo3.png";
+
+
+import { mapGetters } from "vuex";
+import videoBox from "./components/videoBox.vue";
 import trafficLightCpt from "./components/trafficLight.vue";
 import capture from "./components/capture.vue";
+import demos from "./components/demos.vue";
+import playMp3 from "./components/playMp3.vue";
 
 export default {
   name: 'app',
   data() {
     return {
-      mapBg, map, trafficLight, normalBg, normalclose, parkBg, parkclose, ETCBg, ETCclose,
+      mapBg, map, trafficLight, normalBg, normalclose, parkBg, parkclose, ETCBg, ETCclose, demo1, demo2, demo3,
       curFlow: "",
       timer: "",
       curPos: "",
       noticeBg: "",
-      closePic: ""
+      closePic: "",
+      curDemo: "",
+      demoShow: false
     }
   },
-  components: { videoBox, trafficLightCpt, capture },
+  components: { videoBox, trafficLightCpt, capture, demos, playMp3 },
   methods: {
     trafficControl() {
       this.curFlow = trafficLightCpt;
@@ -103,6 +123,11 @@ export default {
         this.noticeBg = ETCBg;
         this.closePic = ETCclose;
       }
+    },
+    demo(val) {
+      console.log(val);
+      this.demoShow = true;
+      this.curDemo = val;
     }
   },
   mounted: function () {
@@ -111,11 +136,6 @@ export default {
     _this.timer = setInterval(function () {
       _this.$store.dispatch("_axios/_axiosGet", "http://10.1.1.203:8080/interface");
     },1000);
-    // let second = parseInt((timeStart - timeEnd) / 1000)
-    // var timestamp = new Date().getTime();
-    // var hours = new Date(timestamp).getHours();
-    // var min = new Date(timestamp).getMinutes();
-    // console.log(hours, min)
   },
   computed: {
     ...mapGetters("_axios", {
@@ -160,6 +180,12 @@ html,body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+.mp3 {
+  position: absolute;
+  width: 0;
+  height: 0;
 }
 
 .head {
@@ -249,7 +275,7 @@ html,body {
   height: auto;
 }
 
-.trafficBtn, .CarPosition {
+.trafficBtn, .CarPosition, .demoPosition {
   position: absolute;
   top: 0;
   left: 0;
@@ -262,7 +288,36 @@ html,body {
 }
 
 .CarPosition {
-  z-index: 9;
+  z-index: 8;
+}
+
+.demoPosition {
+  z-index: 11;
+}
+
+.demoBtnBox {
+  position: absolute;
+  width: 100%;
+  height: 70px;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 11;
+}
+
+.demoBtn {
+  width: 20%;
+  height: auto;
+  cursor: pointer;
+}
+
+.demoImg {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .tBtn {
@@ -349,7 +404,7 @@ html,body {
 }
 
 .posFFF {
-  background: #fff;
+  background: rgba(0, 0, 0, 0);
 }
 
 .posRED {
